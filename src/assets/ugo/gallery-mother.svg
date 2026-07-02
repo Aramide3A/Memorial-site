@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Mother teacher mentor memorial card</title>
+  <desc id="desc">A remembrance card highlighting the roles repeated throughout the memorial wall.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6f7d67" />
+      <stop offset="100%" stop-color="#d9cfb3" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)" rx="36" />
+  <text x="120" y="200" font-family="Georgia, serif" font-size="84" fill="#fdf8ef">Mother</text>
+  <text x="120" y="338" font-family="Georgia, serif" font-size="84" fill="#fdf8ef">Teacher</text>
+  <text x="120" y="476" font-family="Georgia, serif" font-size="84" fill="#fdf8ef">Mentor</text>
+  <text x="120" y="614" font-family="Georgia, serif" font-size="84" fill="#fdf8ef">Woman of faith</text>
+  <text x="120" y="734" font-family="Georgia, serif" font-size="30" fill="#f7f1e6">The roles most often repeated in the recovered memorial messages</text>
+</svg>

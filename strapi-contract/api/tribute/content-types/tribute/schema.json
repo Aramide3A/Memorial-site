@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tributes",
+  "info": {
+    "singularName": "tribute",
+    "pluralName": "tributes",
+    "displayName": "Tribute"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "author": {
+      "type": "string",
+      "required": true
+    },
+    "relationship": {
+      "type": "string",
+      "required": true
+    },
+    "message": {
+      "type": "text",
+      "required": true
+    },
+    "approved": {
+      "type": "boolean",
+      "default": false
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

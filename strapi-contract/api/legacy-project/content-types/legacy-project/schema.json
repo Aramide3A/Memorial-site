@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "legacy_projects",
+  "info": {
+    "singularName": "legacy-project",
+    "pluralName": "legacy-projects",
+    "displayName": "Legacy Project"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "year": {
+      "type": "string",
+      "required": true
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": ["Orphanage", "Community", "Family", "Scholarship", "Other"],
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "summary": {
+      "type": "text",
+      "required": true
+    },
+    "highlights": {
+      "type": "json"
+    },
+    "assetCount": {
+      "type": "string"
+    },
+    "story": {
+      "type": "richtext",
+      "required": true
+    },
+    "cover": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

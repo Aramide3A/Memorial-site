@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "gallery_collections",
+  "info": {
+    "singularName": "gallery-collection",
+    "pluralName": "gallery-collections",
+    "displayName": "Gallery Collection"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "count": {
+      "type": "integer",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "items": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": ["images", "videos"]
+    }
+  }
+}

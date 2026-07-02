@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1400" role="img" aria-labelledby="title desc">
+  <title id="title">Memorial portrait card for Deaconess Ugo Geri Robert</title>
+  <desc id="desc">A warm memorial card with the name Deaconess Ugo Geri Robert and themes of faith, excellence, mentorship, and love.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f1d7be" />
+      <stop offset="48%" stop-color="#b98558" />
+      <stop offset="100%" stop-color="#3f2b23" />
+    </linearGradient>
+    <linearGradient id="halo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff8ef" stop-opacity="0.92" />
+      <stop offset="100%" stop-color="#fff8ef" stop-opacity="0.18" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1400" fill="url(#bg)" rx="48" />
+  <circle cx="600" cy="380" r="210" fill="url(#halo)" />
+  <circle cx="600" cy="380" r="182" fill="none" stroke="#f7eadb" stroke-opacity="0.5" stroke-width="3" />
+  <text x="600" y="430" text-anchor="middle" font-family="Georgia, serif" font-size="188" fill="#3f2b23">U</text>
+  <text x="600" y="760" text-anchor="middle" font-family="Georgia, serif" font-size="52" fill="#fff7ef">DEACONESS UGO GERI ROBERT</text>
+  <text x="600" y="832" text-anchor="middle" font-family="Georgia, serif" font-size="31" fill="#fff2e6">Called to glory on November 28, 2022</text>
+  <text x="600" y="944" text-anchor="middle" font-family="Georgia, serif" font-size="45" fill="#fff8ef">Faith. Excellence. Mentorship. Love.</text>
+  <text x="600" y="1026" text-anchor="middle" font-family="Georgia, serif" font-size="29" fill="#fce8d1">Remembered across family, church, and professional circles</text>
+  <rect x="214" y="1118" width="772" height="2" fill="#fce8d1" fill-opacity="0.65" />
+  <text x="600" y="1198" text-anchor="middle" font-family="Georgia, serif" font-size="28" fill="#fff4ea">A life of impact still speaking through the people she loved and led</text>
+</svg>

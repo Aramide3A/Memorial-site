@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Professional legacy memorial card</title>
+  <desc id="desc">A remembrance card about leadership and excellence in market research.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2f251f" />
+      <stop offset="100%" stop-color="#b68557" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)" rx="36" />
+  <text x="120" y="198" font-family="Georgia, serif" font-size="30" fill="#fff2e0">PROFESSIONAL LEGACY</text>
+  <text x="120" y="360" font-family="Georgia, serif" font-size="76" fill="#fff8ef">A renowned expert</text>
+  <text x="120" y="448" font-family="Georgia, serif" font-size="76" fill="#fff8ef">in qualitative</text>
+  <text x="120" y="536" font-family="Georgia, serif" font-size="76" fill="#fff8ef">research</text>
+  <text x="120" y="692" font-family="Georgia, serif" font-size="30" fill="#fde7ce">Built from public testimonials describing her leadership and mentorship</text>
+</svg>

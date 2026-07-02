@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_memorial_person_profiles",
+  "info": {
+    "displayName": "person-profile"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "years": {
+      "type": "string",
+      "required": true
+    },
+    "roles": {
+      "type": "json"
+    },
+    "heroTitle": {
+      "type": "string",
+      "required": true
+    },
+    "heroBody": {
+      "type": "text",
+      "required": true
+    },
+    "portrait": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "familyMessage": {
+      "type": "richtext"
+    }
+  }
+}

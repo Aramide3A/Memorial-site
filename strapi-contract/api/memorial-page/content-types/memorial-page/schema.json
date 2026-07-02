@@ -1,0 +1,66 @@
+{
+  "kind": "collectionType",
+  "collectionName": "memorial_pages",
+  "info": {
+    "singularName": "memorial-page",
+    "pluralName": "memorial-pages",
+    "displayName": "Memorial Page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "slug": {
+      "type": "uid",
+      "targetField": "siteTitle",
+      "required": true
+    },
+    "siteTitle": {
+      "type": "string",
+      "required": true
+    },
+    "shortTitle": {
+      "type": "string",
+      "required": true
+    },
+    "tagline": {
+      "type": "text"
+    },
+    "nextRemembranceDate": {
+      "type": "datetime"
+    },
+    "announcementItems": {
+      "type": "json"
+    },
+    "quickStats": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.stat"
+    },
+    "person": {
+      "type": "component",
+      "repeatable": false,
+      "component": "memorial.person-profile"
+    },
+    "timeline": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.timeline-entry"
+    },
+    "legacyProjects": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::legacy-project.legacy-project"
+    },
+    "galleryCollections": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::gallery-collection.gallery-collection"
+    },
+    "tributes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tribute.tribute"
+    }
+  }
+}

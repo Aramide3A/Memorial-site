@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_shared_timeline_entries",
+  "info": {
+    "displayName": "timeline-entry"
+  },
+  "options": {},
+  "attributes": {
+    "id": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "body": {
+      "type": "text",
+      "required": true
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}
