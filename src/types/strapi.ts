@@ -1,16 +1,17 @@
 import { GalleryCollection, LegacyProject, MemorialContent, PersonProfile, SiteConfig, TimelineEntry, Tribute } from "./memorial";
 
 export type StrapiEntity<T> = {
-  id: number;
-  attributes: T;
+  id: number | string;
+  documentId?: string;
+  attributes?: T;
 };
 
 export type StrapiRelation<T> = {
-  data: StrapiEntity<T> | null;
+  data?: StrapiEntity<T> | null;
 };
 
 export type StrapiRelationList<T> = {
-  data: Array<StrapiEntity<T>>;
+  data?: Array<StrapiEntity<T>>;
 };
 
 export type StrapiMediaAttributes = {
@@ -26,16 +27,23 @@ export type StrapiStatComponent = SiteConfig["quickStats"][number];
 export type StrapiTimelineComponent = TimelineEntry;
 
 export type StrapiPersonComponent = Omit<PersonProfile, "portrait"> & {
-  portrait?: StrapiRelation<StrapiMediaAttributes>;
+  portrait?: StrapiRelation<StrapiMediaAttributes> | StrapiEntity<StrapiMediaAttributes> | null;
 };
 
 export type StrapiLegacyProjectAttributes = Omit<LegacyProject, "id" | "cover"> & {
-  cover?: StrapiRelation<StrapiMediaAttributes>;
+  cover?: StrapiRelation<StrapiMediaAttributes> | StrapiEntity<StrapiMediaAttributes> | null;
+  images?:
+    | StrapiRelationList<StrapiMediaAttributes>
+    | Array<StrapiEntity<StrapiMediaAttributes>>
+    | null;
 };
 
 export type StrapiGalleryCollectionAttributes = Omit<GalleryCollection, "id" | "items"> & {
   slug?: string;
-  items?: StrapiRelationList<StrapiMediaAttributes>;
+  items?:
+    | StrapiRelationList<StrapiMediaAttributes>
+    | Array<StrapiEntity<StrapiMediaAttributes>>
+    | null;
 };
 
 export type StrapiTributeAttributes = Omit<Tribute, "id"> & {
@@ -53,9 +61,13 @@ export type StrapiMemorialPageAttributes = {
   quickStats?: StrapiStatComponent[];
   person?: StrapiPersonComponent;
   timeline?: StrapiTimelineComponent[];
-  legacyProjects?: StrapiRelationList<StrapiLegacyProjectAttributes>;
-  galleryCollections?: StrapiRelationList<StrapiGalleryCollectionAttributes>;
-  tributes?: StrapiRelationList<StrapiTributeAttributes>;
+  legacyProjects?:
+    | StrapiRelationList<StrapiLegacyProjectAttributes>
+    | Array<StrapiEntity<StrapiLegacyProjectAttributes>>;
+  galleryCollections?:
+    | StrapiRelationList<StrapiGalleryCollectionAttributes>
+    | Array<StrapiEntity<StrapiGalleryCollectionAttributes>>;
+  tributes?: StrapiRelationList<StrapiTributeAttributes> | Array<StrapiEntity<StrapiTributeAttributes>>;
 };
 
 export type StrapiCollectionResponse<T> = {

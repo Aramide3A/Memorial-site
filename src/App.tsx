@@ -17,7 +17,7 @@ function AppRoutes() {
     return <LoadingState message="Preparing the memorial experience..." />;
   }
 
-  if (error || !content) {
+  if (!content) {
     return (
       <LoadingState
         title="Content connection issue"
@@ -27,7 +27,7 @@ function AppRoutes() {
   }
 
   return (
-    <AppShell site={content.site} person={content.person}>
+    <AppShell site={content.site} person={content.person} notice={error}>
       <Routes>
         <Route path="/" element={<HomePage content={content} />} />
         <Route path="/story" element={<StoryPage content={content} />} />

@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { MediaPlaceholder } from "../components/shared/MediaPlaceholder";
+import { MediaCarousel } from "../components/shared/MediaCarousel";
 import { MemorialContent } from "../types/memorial";
 
 export function ProjectDetailPage({ content }: { content: MemorialContent }) {
@@ -18,9 +18,11 @@ export function ProjectDetailPage({ content }: { content: MemorialContent }) {
     );
   }
 
+  const images = project.images?.length ? project.images : project.cover ? [project.cover] : [];
+
   return (
     <div className="page-stack">
-      <section className="page-hero panel">
+      <section className="page-hero panel project-detail-hero">
         <p className="eyebrow">
           {project.year} · {project.category}
         </p>
@@ -39,8 +41,8 @@ export function ProjectDetailPage({ content }: { content: MemorialContent }) {
             ))}
           </div>
         </div>
-        <div className="panel">
-          <MediaPlaceholder asset={project.cover} tone="deep" />
+        <div className="project-detail-media-panel">
+          <MediaCarousel assets={images} tone="deep" />
         </div>
       </section>
     </div>

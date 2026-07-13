@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { CountdownCard } from "../components/shared/CountdownCard";
+import { MediaPlaceholder } from "../components/shared/MediaPlaceholder";
 import { SectionIntro } from "../components/shared/SectionIntro";
 import { TributeCard } from "../components/shared/TributeCard";
 import { WorkCard } from "../components/shared/WorkCard";
@@ -32,9 +33,7 @@ export function HomePage({ content }: { content: MemorialContent }) {
             </div>
           </div>
           <article className="panel portrait-panel memorial-panel">
-            <div className="memorial-image-slot" aria-label={`Portrait placeholder for ${content.person.name}`}>
-              <span>Portrait image</span>
-            </div>
+            <MediaPlaceholder asset={content.person.portrait} tone="deep" />
             <div className="portrait-caption">
               <span className="portrait-intro">In loving memory of</span>
               <strong className="portrait-name">{content.person.name}</strong>
@@ -57,12 +56,12 @@ export function HomePage({ content }: { content: MemorialContent }) {
       <section className="page-section">
         <SectionIntro
           eyebrow="Life remembered"
-          title="The memorial wall tells one clear story: she shaped people through faith, love, and disciplined excellence."
-          body="These themes were repeated across the recovered public messages and now guide the structure of this memorial experience."
+          title="Her life joined Christian service, family devotion, and professional excellence."
+          body="The biography and public tributes now preserved on this site repeat the same themes: faith, encouragement, discipline, generosity, and a life that helped many people move forward."
         />
         <div className="two-column">
           {content.timeline.map((entry) => (
-            <article key={entry.id} className={entry.featured ? "panel featured-panel" : "panel"}>
+            <article key={entry.entryKey} className={entry.featured ? "panel featured-panel" : "panel"}>
               <p className="eyebrow">{entry.label}</p>
               <h3>{entry.title}</h3>
               <p>{entry.body}</p>
@@ -74,10 +73,10 @@ export function HomePage({ content }: { content: MemorialContent }) {
       <section className="page-section">
         <SectionIntro
           eyebrow="Legacy chapters"
-          title="Her impact is remembered across faith, profession, and family."
-          body="Each chapter below gathers the themes that appeared most often on the public memorial page into a locally stored memorial archive."
+          title="Her impact can be traced through ministry, mentorship, and family care."
+          body="These chapters draw from the biography and tribute material preserved here, showing how she was remembered at home, in church, and throughout the research profession."
         />
-        <div className="card-grid three-up">
+        <div className="card-grid legacy-grid">
           {content.legacyProjects.map((project) => (
             <WorkCard key={project.id} project={project} />
           ))}
@@ -86,9 +85,9 @@ export function HomePage({ content }: { content: MemorialContent }) {
 
       <section className="page-section">
         <SectionIntro
-          eyebrow="Recovered tributes"
-          title="Public messages from the memorial wall have been preserved here."
-          body="What people wrote most often was simple and consistent: she loved deeply, corrected wisely, mentored generously, and left a mark that still feels present."
+          eyebrow="Recent tributes"
+          title="People remembered her with gratitude, admiration, and deep affection."
+          body="These messages speak of the support, excellence, encouragement, faith, and love that many people experienced personally in her life."
         />
         <div className="card-grid two-up">
           {content.tributes.slice(0, 4).map((tribute) => (

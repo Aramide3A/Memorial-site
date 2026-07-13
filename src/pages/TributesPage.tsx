@@ -51,8 +51,9 @@ export function TributesPage({ content }: { content: MemorialContent }) {
       <section className="page-hero panel">
         <SectionIntro
           eyebrow="Tribute wall"
-          title="This page preserves a selection of the public remembrance messages recovered from the memorial wall."
-          />
+          title="Words of love, gratitude, and remembrance"
+          body="Each tribute shared here reflects the lives she influenced and the lasting impression of her kindness, strength, and faith."
+        />
       </section>
 
       <section className="card-grid three-up">
@@ -88,7 +89,7 @@ export function TributesPage({ content }: { content: MemorialContent }) {
           <label className="field">
             <span>Tribute message</span>
             <textarea
-              rows={5}
+              rows={4}
               value={form.message}
               onChange={(event) => setForm((current) => ({ ...current, message: event.target.value }))}
               placeholder="Write your memory here..."

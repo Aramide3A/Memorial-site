@@ -1,4 +1,5 @@
 import { createContext, ReactNode, startTransition, useContext, useEffect, useState } from "react";
+import { memorialContent } from "../mocks/memorialContent";
 import { getMemorialContent } from "../services/strapi";
 import { MemorialContent } from "../types/memorial";
 
@@ -32,12 +33,17 @@ export function MemorialProvider({ children }: { children: ReactNode }) {
           setIsLoading(false);
         });
       } catch (loadError) {
+        console.warn("Using hard-coded memorial content because Strapi dynamic content could not be loaded:", loadError);
+
         if (!active) {
           return;
         }
 
-        setError(loadError instanceof Error ? loadError.message : "An unexpected error occurred.");
-        setIsLoading(false);
+        startTransition(() => {
+          setContent(memorialContent);
+          setError(null);
+          setIsLoading(false);
+        });
       }
     }
 

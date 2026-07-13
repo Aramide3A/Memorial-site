@@ -21,25 +21,25 @@ export const memorialContent: MemorialContent = {
       { label: "Tributes", href: "/tributes" },
     ],
     quickStats: [
-      { value: "50", label: "Public memorial messages recovered" },
-      { value: "04", label: "Roles repeated across the tribute wall" },
-      { value: "03", label: "Circles of impact preserved here" },
+      { value: "08", label: "Recent tribute messages preserved here" },
+      { value: "04", label: "Biography chapters highlighted on this site" },
+      { value: "2016", label: "Year she was ordained a Deaconess" },
     ],
     announcementItems: [
-      "Mother to many",
-      "Teacher and mentor",
-      "A life of faith",
-      "Legacy of excellence",
-      "Loved beyond words",
+      "Born August 20, 1969",
+      "Queens College alumna",
+      "Research industry leader",
+      "Ordained Deaconess in 2016",
+      "Married Pastor Robert Geri",
     ],
   },
   person: {
     name: "Deaconess Ugo Geri Robert",
     years: "Called to glory on November 28, 2022",
     roles: ["Mother", "Teacher", "Mentor", "Woman of faith"],
-    heroTitle: "Her life of faith, excellence, and love still speaks.",
+    heroTitle: "Her life of faith, excellence, and service still speaks.",
     heroBody:
-      "This memorial experience was populated from the public ForeverMissed tribute wall, preserving the words used most often about her: mother, teacher, mentor, encourager, and a woman whose love for God and people left a lasting mark.",
+      "Born on August 20, 1969, Ugo Nnennanya Geri-Robert was remembered as a devoted Christian, accomplished research leader, beloved wife, and a motherly presence whose encouragement, discipline, and generosity shaped many lives.",
     portrait: {
       url: portraitArtwork,
       alt: "Memorial portrait card for Deaconess Ugo Geri Robert",
@@ -50,29 +50,29 @@ export const memorialContent: MemorialContent = {
   },
   timeline: [
     {
-      id: "faith",
+      entryKey: "faith",
       label: "Faith",
-      title: "She was remembered as a woman who lived openly for the Lord.",
-      body: "Many of the recovered messages describe her as joyful in service, fearless in conviction, and committed to helping others grow in faith.",
+      title: "She gave her life to Christ and served with visible conviction.",
+      body: "After being invited to a Christ Embassy outreach, she gave her life to Christ, later joined The Haven, became a Haven Governor, served as Zonal Secretary Finance, and was ordained a Deaconess in 2016.",
       featured: true,
     },
     {
-      id: "family",
+      entryKey: "family",
       label: "Family",
-      title: "Family tributes speak of a strong matriarch and steady source of care.",
-      body: "The memorial wall repeatedly returns to her generosity, her sacrifices for loved ones, and the way she made people feel protected, corrected, and deeply seen.",
+      title: "Her home was remembered as a place of faith, help, and welcome.",
+      body: "She married Pastor Robert Geri on March 15, 2003, and their Christian home became a place of succor to many. She was remembered as loving, caring, and never tired of helping others.",
     },
     {
-      id: "mentorship",
+      entryKey: "mentorship",
       label: "Mentorship",
-      title: "Colleagues and mentees describe a leader who opened doors for others.",
-      body: "Recovered messages from the memorial page speak of encouragement, standards of excellence, practical wisdom, and careers shaped by her guidance.",
+      title: "She opened doors for younger professionals and pushed people higher.",
+      body: "Tributes remember her support, motivation, advice, and the confidence she built in others. Many described her as a teacher and mentor whose standards of excellence changed careers.",
     },
     {
-      id: "legacy",
+      entryKey: "legacy",
       label: "Legacy",
-      title: "Her impact is remembered across church, home, and professional life.",
-      body: "Even brief tributes call her unforgettable, love personified, and a rare gem whose influence continues long after her passing.",
+      title: "Her legacy lives on in family, ministry, and the research profession.",
+      body: "From MAP Research to Kantar Nigeria and The Insight Place, and from church ministry to family life, she is still remembered as kind, resolute, generous, and impossible to forget.",
     },
   ],
   legacyProjects: [
@@ -90,6 +90,18 @@ export const memorialContent: MemorialContent = {
         alt: "Faith and service memorial artwork",
         caption: "A locally stored memorial card built from the tribute wall.",
       },
+      images: [
+        {
+          url: faithAndServiceArtwork,
+          alt: "Faith and service memorial artwork",
+          caption: "A locally stored memorial card built from the tribute wall.",
+        },
+        {
+          url: galleryMotherArtwork,
+          alt: "Mother, teacher, mentor, woman of faith memorial card",
+          caption: "The roles most frequently used to describe her.",
+        },
+      ],
       story:
         "Again and again, the public tributes describe a woman whose faith was visible, practical, and generous. Visitors remembered her encouragement, her example, and the way she kept pointing people back to God while caring for them personally.",
     },
@@ -107,6 +119,18 @@ export const memorialContent: MemorialContent = {
         alt: "Mentorship and excellence memorial artwork",
         caption: "A locally stored memorial card built from colleague tributes.",
       },
+      images: [
+        {
+          url: mentorshipArtwork,
+          alt: "Mentorship and excellence memorial artwork",
+          caption: "A locally stored memorial card built from colleague tributes.",
+        },
+        {
+          url: galleryProfessionArtwork,
+          alt: "Professional legacy memorial card",
+          caption: "A tribute to her impact in qualitative research and leadership.",
+        },
+      ],
       story:
         "Several recovered messages mention doors she opened, confidence she built in younger professionals, and the rare balance of firmness and kindness she brought into leadership. Her influence is described not only in outcomes, but in the people she helped become more capable and more confident.",
     },
@@ -124,6 +148,18 @@ export const memorialContent: MemorialContent = {
         alt: "Family love and generosity memorial artwork",
         caption: "A locally stored memorial card built from family tributes.",
       },
+      images: [
+        {
+          url: familyLegacyArtwork,
+          alt: "Family love and generosity memorial artwork",
+          caption: "A locally stored memorial card built from family tributes.",
+        },
+        {
+          url: galleryLoveArtwork,
+          alt: "Loved beyond words memorial card",
+          caption: "A closing line echoed by multiple memorial guests.",
+        },
+      ],
       story:
         "The tribute wall carries the language of deep personal loss alongside gratitude for her sacrifices, counsel, and love. Even short notes return to the same truth: her care was felt widely, and the people she loved still live inside that legacy.",
     },

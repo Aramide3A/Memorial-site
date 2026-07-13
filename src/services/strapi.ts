@@ -1,6 +1,7 @@
-import { MemorialContent } from "../types/memorial";
 import { memorialContent } from "../mocks/memorialContent";
+import { MemorialContent } from "../types/memorial";
 import {
+  StrapiCollectionResponse,
   MemorialPageResponse,
   StrapiEntity,
   StrapiGalleryCollectionAttributes,
@@ -9,15 +10,58 @@ import {
   StrapiTributeAttributes,
 } from "../types/strapi";
 
-const strapiUrl = import.meta.env.VITE_STRAPI_URL;
+const rawStrapiUrl = import.meta.env.VITE_STRAPI_URL;
+const strapiUrl = rawStrapiUrl?.replace(/\/api\/?$/, "").replace(/\/$/, "");
 const strapiToken = import.meta.env.VITE_STRAPI_TOKEN;
 const memorialSlug = import.meta.env.VITE_MEMORIAL_SLUG ?? "adunni-legacy";
+const encodedMemorialSlug = encodeURIComponent(memorialSlug);
 const memorialPopulateQuery = [
-  "populate[person][populate][portrait]=*",
-  "populate[legacyProjects][populate][cover]=*",
-  "populate[galleryCollections][populate][items]=*",
-  "populate[tributes]=*",
+  "fields[0]=nextRemembranceDate",
 ].join("&");
+const legacyProjectsPopulateQuery = ["populate[cover]=true", "populate[images]=true"].join("&");
+const galleryCollectionsPopulateQuery = ["populate[items]=true"].join("&");
+
+function readAttributes<T>(entity?: StrapiEntity<T> | T | null): T | undefined {
+  if (!entity) {
+    return undefined;
+  }
+
+  if (typeof entity === "object" && "attributes" in entity && entity.attributes) {
+    return entity.attributes;
+  }
+
+  return entity as T;
+}
+
+function readRelation<T>(relation?: StrapiEntity<T> | { data?: StrapiEntity<T> | null } | null): T | undefined {
+  if (!relation) {
+    return undefined;
+  }
+
+  if (typeof relation === "object" && "data" in relation) {
+    return readAttributes(relation.data);
+  }
+
+  return readAttributes(relation as StrapiEntity<T>);
+}
+
+function readRelationList<T>(
+  relation?: Array<StrapiEntity<T>> | { data?: Array<StrapiEntity<T>> } | null,
+): T[] {
+  return readRelationEntities(relation)
+    .map((item) => readAttributes(item))
+    .filter((item): item is T => Boolean(item));
+}
+
+function readRelationEntities<T>(
+  relation?: Array<StrapiEntity<T>> | { data?: Array<StrapiEntity<T>> } | null,
+): Array<StrapiEntity<T>> {
+  if (!relation) {
+    return [];
+  }
+
+  return Array.isArray(relation) ? relation : relation.data ?? [];
+}
 
 function buildHeaders() {
   if (!strapiToken) {
@@ -25,6 +69,16 @@ function buildHeaders() {
   }
 
   return { Authorization: `Bearer ${strapiToken}` };
+}
+
+function requireString(value: string | null | undefined, fieldName: string) {
+  const normalized = value?.trim();
+
+  if (!normalized) {
+    throw new Error(`The Strapi field "${fieldName}" is required but missing.`);
+  }
+
+  return normalized;
 }
 
 function mapImage(asset?: StrapiMediaAttributes | null) {
@@ -43,89 +97,139 @@ function mapImage(asset?: StrapiMediaAttributes | null) {
 }
 
 function mapLegacyProject(entity: StrapiEntity<StrapiLegacyProjectAttributes>) {
+  const data = readAttributes(entity);
+
+  if (!data) {
+    throw new Error("Legacy project data is missing.");
+  }
+
+  const cover = mapImage(readRelation(data.cover));
+  const images = readRelationList(data.images).map((item) => mapImage(item));
+
   return {
     id: String(entity.id),
-    slug: entity.attributes.slug,
-    year: entity.attributes.year,
-    category: entity.attributes.category,
-    title: entity.attributes.title,
-    summary: entity.attributes.summary,
-    highlights: entity.attributes.highlights ?? [],
-    assetCount: entity.attributes.assetCount ?? "",
-    story: entity.attributes.story,
-    cover: entity.attributes.cover?.data ? mapImage(entity.attributes.cover.data.attributes) : undefined,
+    slug: requireString(data.slug, "legacyProjects.slug"),
+    year: requireString(data.year, "legacyProjects.year"),
+    category: requireString(data.category, "legacyProjects.category"),
+    title: requireString(data.title, "legacyProjects.title"),
+    summary: requireString(data.summary, "legacyProjects.summary"),
+    highlights: data.highlights ?? [],
+    assetCount: data.assetCount ?? "",
+    story: requireString(data.story, "legacyProjects.story"),
+    cover,
+    images: images.length ? images : cover.url ? [cover] : [],
   };
 }
 
 function mapGalleryCollection(entity: StrapiEntity<StrapiGalleryCollectionAttributes>) {
+  const data = readAttributes(entity);
+
+  if (!data) {
+    throw new Error("Gallery collection data is missing.");
+  }
+
   return {
     id: String(entity.id),
-    title: entity.attributes.title,
-    count: entity.attributes.count,
-    description: entity.attributes.description,
-    items: entity.attributes.items?.data?.map((item) => mapImage(item.attributes)) ?? [],
+    title: requireString(data.title, "galleryCollections.title"),
+    count: data.count,
+    description: data.description?.trim() ?? "",
+    items: readRelationList(data.items).map((item) => mapImage(item)),
   };
 }
 
 function mapTribute(entity: StrapiEntity<StrapiTributeAttributes>) {
-  return {
-    id: String(entity.id),
-    author: entity.attributes.author,
-    relationship: entity.attributes.relationship,
-    date: entity.attributes.date,
-    message: entity.attributes.message,
-  };
-}
-
-function mapStrapiContent(payload: MemorialPageResponse): MemorialContent {
-  const data = payload.data?.[0]?.attributes;
+  const data = readAttributes(entity);
 
   if (!data) {
-    return memorialContent;
+    throw new Error("Tribute data is missing.");
   }
 
   return {
+    id: String(entity.id),
+    author: requireString(data.author, "tributes.author"),
+    relationship: data.relationship,
+    date: data.date,
+    message: requireString(data.message, "tributes.message"),
+  };
+}
+
+function mapStrapiContent(
+  payload: MemorialPageResponse,
+  legacyProjectsPayload: StrapiCollectionResponse<StrapiLegacyProjectAttributes>,
+  galleryCollectionsPayload: StrapiCollectionResponse<StrapiGalleryCollectionAttributes>,
+  tributesPayload: StrapiCollectionResponse<StrapiTributeAttributes>,
+): MemorialContent {
+  const data = readAttributes(payload.data?.[0]);
+  const legacyProjects = legacyProjectsPayload.data ?? [];
+  const galleryCollections = galleryCollectionsPayload.data ?? [];
+  const tributes = tributesPayload.data ?? [];
+  const nextRemembranceDate = data?.nextRemembranceDate?.trim();
+
+  return {
+    ...memorialContent,
     site: {
-      title: data.siteTitle ?? memorialContent.site.title,
-      shortTitle: data.shortTitle ?? memorialContent.site.shortTitle,
-      tagline: data.tagline ?? memorialContent.site.tagline,
-      nextRemembranceDate: data.nextRemembranceDate ?? memorialContent.site.nextRemembranceDate,
-      navigation: memorialContent.site.navigation,
-      quickStats: data.quickStats ?? memorialContent.site.quickStats,
-      announcementItems: data.announcementItems ?? memorialContent.site.announcementItems,
+      ...memorialContent.site,
+      nextRemembranceDate: nextRemembranceDate ?? memorialContent.site.nextRemembranceDate,
     },
-    person: {
-      name: data.person?.name ?? memorialContent.person.name,
-      years: data.person?.years ?? memorialContent.person.years,
-      roles: data.person?.roles ?? memorialContent.person.roles,
-      heroTitle: data.person?.heroTitle ?? memorialContent.person.heroTitle,
-      heroBody: data.person?.heroBody ?? memorialContent.person.heroBody,
-      portrait: data.person?.portrait?.data ? mapImage(data.person.portrait.data.attributes) : undefined,
-      familyMessage: data.person?.familyMessage ?? memorialContent.person.familyMessage,
-    },
-    timeline: data.timeline ?? memorialContent.timeline,
-    legacyProjects: data.legacyProjects?.data?.map(mapLegacyProject) ?? memorialContent.legacyProjects,
-    galleryCollections: data.galleryCollections?.data?.map(mapGalleryCollection) ?? memorialContent.galleryCollections,
-    tributes: data.tributes?.data?.map(mapTribute) ?? memorialContent.tributes,
+    legacyProjects: legacyProjects.map(mapLegacyProject),
+    galleryCollections: galleryCollections.map(mapGalleryCollection),
+    tributes: tributes.map(mapTribute),
   };
 }
 
 export async function getMemorialContent(): Promise<MemorialContent> {
   if (!strapiUrl) {
-    return memorialContent;
+    throw new Error("VITE_STRAPI_URL is not configured. The memorial site now loads content only from Strapi.");
   }
 
-  const response = await fetch(
-    `${strapiUrl}/api/memorial-pages?filters[slug][$eq]=${memorialSlug}&${memorialPopulateQuery}`,
-    { headers: buildHeaders() },
-  );
+  const memorialPageUrl = `${strapiUrl}/api/memorial-pages?filters[slug][$eq]=${encodedMemorialSlug}&${memorialPopulateQuery}`;
+  const legacyProjectsUrl = `${strapiUrl}/api/legacy-projects?${legacyProjectsPopulateQuery}`;
+  const galleryCollectionsUrl = `${strapiUrl}/api/gallery-collections?${galleryCollectionsPopulateQuery}`;
+  const tributesUrl = `${strapiUrl}/api/tributes`;
 
-  if (!response.ok) {
-    throw new Error("The Strapi content request failed.");
+  async function fetchStrapi<T>(requestUrl: string): Promise<T> {
+    let response: Response;
+  
+    try {
+      response = await fetch(requestUrl, { headers: buildHeaders() });
+    } catch (error) {
+      throw new Error(
+        `Could not reach Strapi at ${strapiUrl}. Make sure the CMS is running and accessible. ${
+          error instanceof Error ? error.message : ""
+        }`.trim(),
+      );
+    }
+  
+    if (!response.ok) {
+    let details = "";
+
+    try {
+      const payload = (await response.json()) as {
+        error?: { message?: string };
+      };
+      details = payload.error?.message ?? "";
+    } catch {
+      details = await response.text();
+    }
+
+    throw new Error(
+      `The Strapi content request to ${requestUrl} failed with ${response.status} ${response.statusText}${
+        details ? `: ${details}` : ""
+      }`,
+    );
   }
 
-  const payload = (await response.json()) as MemorialPageResponse;
-  return mapStrapiContent(payload);
+    return (await response.json()) as T;
+  }
+
+  const [memorialPagePayload, legacyProjectsPayload, galleryCollectionsPayload, tributesPayload] = await Promise.all([
+    fetchStrapi<MemorialPageResponse>(memorialPageUrl),
+    fetchStrapi<StrapiCollectionResponse<StrapiLegacyProjectAttributes>>(legacyProjectsUrl),
+    fetchStrapi<StrapiCollectionResponse<StrapiGalleryCollectionAttributes>>(galleryCollectionsUrl),
+    fetchStrapi<StrapiCollectionResponse<StrapiTributeAttributes>>(tributesUrl),
+  ]);
+
+  return mapStrapiContent(memorialPagePayload, legacyProjectsPayload, galleryCollectionsPayload, tributesPayload);
 }
 
 export const strapiContract = {

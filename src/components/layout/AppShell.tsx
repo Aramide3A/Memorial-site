@@ -6,10 +6,12 @@ export function AppShell({
   children,
   site,
   person,
+  notice,
 }: {
   children: ReactNode;
   site: SiteConfig;
   person: PersonProfile;
+  notice?: string | null;
 }) {
   return (
     <div className="site-shell">
@@ -38,6 +40,12 @@ export function AppShell({
           Leave tribute
         </NavLink>
       </header>
+      {notice ? (
+        <aside className="site-notice" role="status" aria-live="polite">
+          <p className="eyebrow">Content notice</p>
+          <p>{notice}</p>
+        </aside>
+      ) : null}
       <main className="page-frame">{children}</main>
       <footer className="site-footer">
         <div>

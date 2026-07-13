@@ -1,27 +1,27 @@
 # Strapi Content Model
 
-This front end is structured around a small set of Strapi content types so biography content, remembrance projects, gallery collections, and public tributes can evolve independently.
+This front end keeps the memorial biography, profile, navigation, timeline, homepage copy, and other fixed site text in code. Strapi is used only for dynamic memorial data: the countdown date, legacy projects, gallery pictures, and public tributes.
 
 ## Recommended collection types
 
 ### `memorial-page`
 
-Primary page-level record used by the frontend home and section pages.
+Primary dynamic record used by the frontend to find the countdown date. Legacy projects, gallery collections, and tributes are fetched directly from their collection endpoints.
 
 Fields:
 
 - `slug` (`uid`, required)
-- `siteTitle` (`string`, required)
-- `shortTitle` (`string`, required)
-- `tagline` (`text`)
-- `nextRemembranceDate` (`datetime`)
+- `siteTitle` (`string`, optional; currently ignored by the frontend)
+- `shortTitle` (`string`, optional; currently ignored by the frontend)
+- `tagline` (`text`, optional; currently ignored by the frontend)
+- `nextRemembranceDate` (`datetime`, optional; overrides the hard-coded countdown when present)
 - `announcementItems` (`json`)
 - `quickStats` (`component`, repeatable: `shared.stat`)
-- `person` (`component`: `memorial.person-profile`)
-- `timeline` (`component`, repeatable: `shared.timeline-entry`)
-- `legacyProjects` (`relation`, one-to-many -> `legacy-project`)
-- `galleryCollections` (`relation`, one-to-many -> `gallery-collection`)
-- `tributes` (`relation`, one-to-many -> `tribute`)
+- `person` (`component`: `memorial.person-profile`, optional; currently ignored by the frontend)
+- `timeline` (`component`, repeatable: `shared.timeline-entry`, currently ignored by the frontend)
+- `legacyProjects` (`relation`, one-to-many -> `legacy-project`, optional; currently ignored by the frontend)
+- `galleryCollections` (`relation`, one-to-many -> `gallery-collection`, optional; currently ignored by the frontend)
+- `tributes` (`relation`, one-to-many -> `tribute`, optional; currently ignored by the frontend)
 
 ### `legacy-project`
 
@@ -48,7 +48,7 @@ Fields:
 - `slug` (`uid`)
 - `title` (`string`, required)
 - `count` (`integer`, required)
-- `description` (`text`)
+- `description` (`text`, optional)
 - `items` (`media`, multiple)
 
 ### `tribute`
@@ -59,6 +59,7 @@ Fields:
 
 - `author` (`string`, required)
 - `relationship` (`string`, required)
+- `date` (`date`)
 - `message` (`text`, required)
 - `approved` (`boolean`, default `false`)
 - `featured` (`boolean`, default `false`)
@@ -73,7 +74,7 @@ Fields:
 - `heroTitle` (`string`, required)
 - `heroBody` (`text`, required)
 - `portrait` (`media`, single image)
-- `familyMessage` (`richtext`)
+- `familyMessage` (`richtext`, required)
 
 ### `shared.stat`
 
@@ -82,7 +83,7 @@ Fields:
 
 ### `shared.timeline-entry`
 
-- `id` (`string`)
+- `entryKey` (`string`)
 - `label` (`string`, required)
 - `title` (`string`, required)
 - `body` (`text`, required)
@@ -93,16 +94,15 @@ Fields:
 The frontend currently expects:
 
 - `GET /api/memorial-pages?filters[slug][$eq]=:slug`
-- `populate[person][populate][portrait]=*`
-- `populate[legacyProjects][populate][cover]=*`
-- `populate[galleryCollections][populate][items]=*`
-- `populate[tributes]=*`
+- `GET /api/legacy-projects?populate[cover]=true&populate[images]=true`
+- `GET /api/gallery-collections?populate[items]=true`
+- `GET /api/tributes`
 
-The corresponding frontend mapper lives in [src/services/strapi.ts](/Users/al-ameen/Documents/Memorial-site/src/services/strapi.ts), and the API types live in [src/types/strapi.ts](/Users/al-ameen/Documents/Memorial-site/src/types/strapi.ts).
+The corresponding frontend mapper lives in [src/services/strapi.ts](/Users/al-ameen/Documents/Memorial-site/src/services/strapi.ts), and the API types live in [src/types/strapi.ts](/Users/al-ameen/Documents/Memorial-site/src/types/strapi.ts). The mapper starts from [src/mocks/memorialContent.ts](/Users/al-ameen/Documents/Memorial-site/src/mocks/memorialContent.ts) and overlays only `nextRemembranceDate`, published `legacyProjects`, published `galleryCollections`, and published `tributes` from Strapi.
 
 ## Editorial flow
 
-- Family-controlled biography and homepage content should live on `memorial-page`.
+- Family-controlled biography and homepage content should stay in the hard-coded frontend content file.
 - Yearly remembrance work should be created as separate `legacy-project` entries.
 - Media should be grouped into `gallery-collection` records instead of one undifferentiated upload pool.
 - Public tribute submission should create `tribute` entries with `approved=false`.

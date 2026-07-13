@@ -36,7 +36,7 @@ export type PersonProfile = {
 };
 
 export type TimelineEntry = {
-  id: string;
+  entryKey: string;
   label: string;
   title: string;
   body: string;
@@ -53,6 +53,7 @@ export type LegacyProject = {
   highlights: string[];
   assetCount: string;
   cover?: MediaAsset;
+  images?: MediaAsset[];
   story: string;
 };
 
@@ -60,7 +61,7 @@ export type GalleryCollection = {
   id: string;
   title: string;
   count: number;
-  description: string;
+  description?: string;
   items: MediaAsset[];
 };
 

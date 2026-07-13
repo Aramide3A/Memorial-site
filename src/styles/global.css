@@ -90,6 +90,19 @@ textarea {
   background: rgba(255, 249, 241, 0.72);
 }
 
+.site-notice {
+  margin: 0 0 24px;
+  padding: 18px 22px;
+  border: 1px solid rgba(166, 95, 71, 0.2);
+  border-radius: 24px;
+  background: rgba(255, 243, 235, 0.88);
+  box-shadow: var(--shadow);
+}
+
+.site-notice p + p {
+  color: var(--muted);
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -273,6 +286,34 @@ h3 {
   line-height: 1.08;
 }
 
+.project-detail-hero h1 {
+  max-width: min(100%, 24ch);
+  font-size: clamp(2.6rem, 5vw, 5rem);
+  line-height: 1.02;
+}
+
+.project-detail-media-panel {
+  display: grid;
+  place-items: start center;
+  padding: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+.project-detail-media-panel .media-carousel {
+  width: 100%;
+  justify-items: center;
+}
+
+.project-detail-media-panel .media-carousel-frame {
+  width: min(68%, 380px);
+}
+
+.project-detail-media-panel .media-block {
+  min-height: 180px;
+  padding: 6px;
+}
+
 .hero-body,
 .section-intro p,
 .panel p,
@@ -367,6 +408,70 @@ h3 {
   height: 100%;
   object-fit: cover;
   border-radius: 20px;
+}
+
+.media-carousel {
+  display: grid;
+  gap: 12px;
+}
+
+.media-carousel-frame {
+  position: relative;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.media-carousel-control {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  color: var(--paper);
+  background: rgba(29, 21, 17, 0.6);
+  cursor: pointer;
+}
+
+.media-carousel-control-prev {
+  left: 14px;
+}
+
+.media-carousel-control-next {
+  right: 14px;
+}
+
+.media-carousel-status {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  padding: 6px 10px;
+  border-radius: var(--radius-pill);
+  color: var(--paper);
+  background: rgba(29, 21, 17, 0.6);
+  font-size: 0.85rem;
+}
+
+.media-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.media-carousel-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(29, 21, 17, 0.18);
+  cursor: pointer;
+}
+
+.media-carousel-dot.active {
+  background: var(--clay);
 }
 
 .tone-warm {
@@ -498,6 +603,15 @@ h3 {
   max-width: 840px;
 }
 
+.page-hero .section-intro {
+  max-width: min(1280px, 100%);
+}
+
+.page-hero .section-intro h2 {
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  line-height: 1.02;
+}
+
 .two-column,
 .split-layout {
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -520,11 +634,45 @@ h3 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.legacy-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .work-card,
 .tribute-card,
 .gallery-collection {
   display: grid;
   gap: 18px;
+}
+
+.work-card {
+  align-content: start;
+}
+
+.work-card-media-shell {
+  display: grid;
+  place-items: start center;
+  padding: 0;
+  background: transparent;
+}
+
+.work-card-media-shell .media-carousel {
+  width: 100%;
+  justify-items: center;
+}
+
+.work-card-media-shell .media-carousel-frame {
+  width: min(72%, 520px);
+}
+
+.work-card .media-block {
+  min-height: 220px;
+  padding: 8px;
+}
+
+.work-card-date {
+  color: var(--muted);
+  font-size: 0.95rem;
 }
 
 .card-body,
@@ -573,7 +721,113 @@ h3 {
 .gallery-image-card {
   display: grid;
   gap: 16px;
+  justify-items: center;
   align-content: start;
+}
+
+.gallery-image-button {
+  width: min(100%, 360px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.gallery-image-card .media-block {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  min-height: 0;
+  padding: 6px;
+}
+
+.gallery-image-card p {
+  width: min(100%, 360px);
+}
+
+.gallery-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(29, 21, 17, 0.58);
+  backdrop-filter: blur(8px);
+}
+
+.gallery-lightbox-card {
+  display: grid;
+  gap: 16px;
+  width: min(92vw, 980px);
+  max-height: calc(100vh - 48px);
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: auto;
+}
+
+.gallery-lightbox-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.gallery-lightbox-count {
+  color: rgba(255, 249, 241, 0.78);
+  font-size: 0.95rem;
+}
+
+.gallery-lightbox-close {
+  justify-self: end;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 249, 241, 0.14);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 249, 241, 0.08);
+  color: var(--paper);
+  font: inherit;
+  cursor: pointer;
+}
+
+.gallery-lightbox-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  place-items: center;
+}
+
+.gallery-lightbox-nav {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  border: 1px solid rgba(255, 249, 241, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 249, 241, 0.08);
+  color: var(--paper);
+  font-size: 2.1rem;
+  line-height: 1;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.gallery-lightbox-media .media-block {
+  width: auto;
+  min-height: auto;
+  max-height: calc(100vh - 120px);
+  padding: 0;
+  background: transparent;
+}
+
+.gallery-lightbox-media .media-block img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(100vh - 120px);
+  object-fit: contain;
+  border-radius: 20px;
 }
 
 .gallery-actions {
@@ -595,9 +849,47 @@ h3 {
 }
 
 .biography-body {
+  display: block;
+}
+
+.biography-card {
+  padding: 38px;
+}
+
+.biography-prose,
+.biography-section {
   display: grid;
-  gap: 18px;
-  align-content: start;
+  gap: 16px;
+}
+
+.biography-prose {
+  display: block;
+  max-width: none;
+}
+
+.biography-prose::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.biography-section + .biography-section {
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+}
+
+.biography-section {
+  display: block;
+}
+
+.biography-section h3 {
+  margin-bottom: 16px;
+}
+
+.biography-section p {
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 16px;
 }
 
 .story-portrait-panel {
@@ -606,10 +898,14 @@ h3 {
   align-content: start;
 }
 
-.biography-aside {
-  display: grid;
-  gap: 18px;
-  align-content: start;
+.biography-card-image {
+  float: right;
+  width: min(34%, 420px);
+  margin: 0 0 20px 32px;
+}
+
+.biography-card-image .media-block {
+  min-height: 420px;
 }
 
 .biography-side-column {
@@ -644,7 +940,7 @@ h3 {
 .field input,
 .field textarea {
   width: 100%;
-  padding: 14px 16px;
+  padding: 12px 14px;
   border: 1px solid var(--line);
   border-radius: 18px;
   background: rgba(255, 249, 241, 0.76);
@@ -654,11 +950,25 @@ h3 {
   position: sticky;
   top: 110px;
   align-self: start;
+  padding: 22px;
+}
+
+.tribute-form-panel h3 {
+  font-size: 1.28rem;
+}
+
+.tribute-form-panel > p {
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.tribute-form-panel .stack-list {
+  gap: 16px;
 }
 
 .tribute-form-bottom {
   position: static;
-  width: min(100%, calc((((100% - 32px) / 3) * 2) + 16px));
+  width: min(100%, calc((100% - 32px) / 3));
   margin: 0 auto;
 }
 
@@ -727,6 +1037,12 @@ h3 {
 
   .tribute-form-bottom {
     width: 100%;
+  }
+
+  .biography-card-image {
+    float: none;
+    width: min(100%, 420px);
+    margin: 0 0 24px;
   }
 }
 
