@@ -1,6 +1,6 @@
 # Strapi Content Model
 
-This front end keeps the memorial biography, profile, navigation, timeline, homepage copy, and other fixed site text in code. Strapi is used only for dynamic memorial data: the countdown date, legacy projects, gallery pictures, and public tributes.
+This front end keeps most memorial biography, navigation, timeline, homepage copy, and other fixed site text in code. Strapi is used for dynamic memorial data: the countdown date, the homepage portrait/cover image, legacy projects, gallery pictures, and public tributes.
 
 ## Recommended collection types
 
@@ -17,7 +17,7 @@ Fields:
 - `nextRemembranceDate` (`datetime`, optional; overrides the hard-coded countdown when present)
 - `announcementItems` (`json`)
 - `quickStats` (`component`, repeatable: `shared.stat`)
-- `person` (`component`: `memorial.person-profile`, optional; currently ignored by the frontend)
+- `person` (`component`: `memorial.person-profile`, optional; the frontend uses `portrait` for the homepage cover and falls back to hard-coded text for any missing profile fields)
 - `timeline` (`component`, repeatable: `shared.timeline-entry`, currently ignored by the frontend)
 - `legacyProjects` (`relation`, one-to-many -> `legacy-project`, optional; currently ignored by the frontend)
 - `galleryCollections` (`relation`, one-to-many -> `gallery-collection`, optional; currently ignored by the frontend)
@@ -93,12 +93,12 @@ Fields:
 
 The frontend currently expects:
 
-- `GET /api/memorial-pages?filters[slug][$eq]=:slug`
+- `GET /api/memorial-pages?filters[slug][$eq]=:slug&fields[0]=nextRemembranceDate&populate[person][populate][portrait]=true`
 - `GET /api/legacy-projects?populate[cover]=true&populate[images]=true`
 - `GET /api/gallery-collections?populate[items]=true`
 - `GET /api/tributes`
 
-The corresponding frontend mapper lives in [src/services/strapi.ts](/Users/al-ameen/Documents/Memorial-site/src/services/strapi.ts), and the API types live in [src/types/strapi.ts](/Users/al-ameen/Documents/Memorial-site/src/types/strapi.ts). The mapper starts from [src/mocks/memorialContent.ts](/Users/al-ameen/Documents/Memorial-site/src/mocks/memorialContent.ts) and overlays only `nextRemembranceDate`, published `legacyProjects`, published `galleryCollections`, and published `tributes` from Strapi.
+The corresponding frontend mapper lives in [src/services/strapi.ts](/Users/al-ameen/Documents/Memorial-site/src/services/strapi.ts), and the API types live in [src/types/strapi.ts](/Users/al-ameen/Documents/Memorial-site/src/types/strapi.ts). The mapper starts from [src/mocks/memorialContent.ts](/Users/al-ameen/Documents/Memorial-site/src/mocks/memorialContent.ts) and overlays `nextRemembranceDate`, `person.portrait`, published `legacyProjects`, published `galleryCollections`, and published `tributes` from Strapi.
 
 ## Editorial flow
 

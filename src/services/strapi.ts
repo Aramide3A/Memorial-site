@@ -1,5 +1,5 @@
 import { memorialContent } from "../mocks/memorialContent";
-import { MemorialContent } from "../types/memorial";
+import { MemorialContent, PersonProfile } from "../types/memorial";
 import {
   StrapiCollectionResponse,
   MemorialPageResponse,
@@ -7,6 +7,7 @@ import {
   StrapiGalleryCollectionAttributes,
   StrapiLegacyProjectAttributes,
   StrapiMediaAttributes,
+  StrapiPersonComponent,
   StrapiTributeAttributes,
 } from "../types/strapi";
 
@@ -17,6 +18,7 @@ const memorialSlug = import.meta.env.VITE_MEMORIAL_SLUG ?? "adunni-legacy";
 const encodedMemorialSlug = encodeURIComponent(memorialSlug);
 const memorialPopulateQuery = [
   "fields[0]=nextRemembranceDate",
+  "populate[person][populate][portrait]=true",
 ].join("&");
 const legacyProjectsPopulateQuery = ["populate[cover]=true", "populate[images]=true"].join("&");
 const galleryCollectionsPopulateQuery = ["populate[items]=true"].join("&");
@@ -137,6 +139,24 @@ function mapGalleryCollection(entity: StrapiEntity<StrapiGalleryCollectionAttrib
   };
 }
 
+function mapPersonProfile(person?: StrapiPersonComponent): PersonProfile {
+  if (!person) {
+    return memorialContent.person;
+  }
+
+  const portrait = mapImage(readRelation(person.portrait));
+
+  return {
+    name: person.name?.trim() || memorialContent.person.name,
+    years: person.years?.trim() || memorialContent.person.years,
+    roles: person.roles?.length ? person.roles : memorialContent.person.roles,
+    heroTitle: person.heroTitle?.trim() || memorialContent.person.heroTitle,
+    heroBody: person.heroBody?.trim() || memorialContent.person.heroBody,
+    familyMessage: person.familyMessage?.trim() || memorialContent.person.familyMessage,
+    portrait: portrait.url ? portrait : memorialContent.person.portrait,
+  };
+}
+
 function mapTribute(entity: StrapiEntity<StrapiTributeAttributes>) {
   const data = readAttributes(entity);
 
@@ -171,6 +191,7 @@ function mapStrapiContent(
       ...memorialContent.site,
       nextRemembranceDate: nextRemembranceDate ?? memorialContent.site.nextRemembranceDate,
     },
+    person: mapPersonProfile(data?.person),
     legacyProjects: legacyProjects.map(mapLegacyProject),
     galleryCollections: galleryCollections.map(mapGalleryCollection),
     tributes: tributes.map(mapTribute),
