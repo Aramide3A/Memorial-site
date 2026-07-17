@@ -1,4 +1,4 @@
-import { GalleryCollection, LegacyProject, MemorialContent, PersonProfile, SiteConfig, TimelineEntry, Tribute } from "./memorial";
+import { GalleryCollection, LegacyProject, MemorialContent, SiteConfig, TimelineEntry, Tribute } from "./memorial";
 
 export type StrapiEntity<T> = {
   id: number | string;
@@ -26,7 +26,7 @@ export type StrapiStatComponent = SiteConfig["quickStats"][number];
 
 export type StrapiTimelineComponent = TimelineEntry;
 
-export type StrapiPersonComponent = Omit<PersonProfile, "portrait"> & {
+export type StrapiPersonComponent = {
   portrait?: StrapiRelation<StrapiMediaAttributes> | StrapiEntity<StrapiMediaAttributes> | null;
 };
 

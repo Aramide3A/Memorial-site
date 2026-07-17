@@ -17,7 +17,7 @@ Fields:
 - `nextRemembranceDate` (`datetime`, optional; overrides the hard-coded countdown when present)
 - `announcementItems` (`json`)
 - `quickStats` (`component`, repeatable: `shared.stat`)
-- `person` (`component`: `memorial.person-profile`, optional; the frontend uses `portrait` for the homepage cover and falls back to hard-coded text for any missing profile fields)
+- `person` (`component`: `memorial.person-profile`, optional; only its `portrait` image is used by the frontend)
 - `timeline` (`component`, repeatable: `shared.timeline-entry`, currently ignored by the frontend)
 - `legacyProjects` (`relation`, one-to-many -> `legacy-project`, optional; currently ignored by the frontend)
 - `galleryCollections` (`relation`, one-to-many -> `gallery-collection`, optional; currently ignored by the frontend)
@@ -68,13 +68,9 @@ Fields:
 
 ### `memorial.person-profile`
 
-- `name` (`string`, required)
-- `years` (`string`, required)
-- `roles` (`json`)
-- `heroTitle` (`string`, required)
-- `heroBody` (`text`, required)
 - `portrait` (`media`, single image)
-- `familyMessage` (`richtext`, required)
+
+The person's name, dates, roles, homepage title and body, and family message remain hard-coded in the frontend. Strapi can replace only the portrait image.
 
 ### `shared.stat`
 

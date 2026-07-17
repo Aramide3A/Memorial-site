@@ -140,19 +140,10 @@ function mapGalleryCollection(entity: StrapiEntity<StrapiGalleryCollectionAttrib
 }
 
 function mapPersonProfile(person?: StrapiPersonComponent): PersonProfile {
-  if (!person) {
-    return memorialContent.person;
-  }
-
-  const portrait = mapImage(readRelation(person.portrait));
+  const portrait = mapImage(readRelation(person?.portrait));
 
   return {
-    name: person.name?.trim() || memorialContent.person.name,
-    years: person.years?.trim() || memorialContent.person.years,
-    roles: person.roles?.length ? person.roles : memorialContent.person.roles,
-    heroTitle: person.heroTitle?.trim() || memorialContent.person.heroTitle,
-    heroBody: person.heroBody?.trim() || memorialContent.person.heroBody,
-    familyMessage: person.familyMessage?.trim() || memorialContent.person.familyMessage,
+    ...memorialContent.person,
     portrait: portrait.url ? portrait : memorialContent.person.portrait,
   };
 }
